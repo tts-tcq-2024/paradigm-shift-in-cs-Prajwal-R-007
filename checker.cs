@@ -13,17 +13,34 @@ class Checker
 
     static void ReportOutOfRange(float temperature, float soc, float chargeRate)
     {
-        if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
+        ReportOutOfRangeForParameter("Temperature", temperature, RangeChecker.CheckTemperature(temperature));
+        ReportOutOfRangeForParameter("State of Charge", soc, RangeChecker.CheckSoc(soc));
+        ReportOutOfRangeForParameter("Charge Rate", chargeRate, RangeChecker.CheckChargeRate(chargeRate));
+    }
+
+    static void ReportOutOfRangeForParameter(string parameterName, float value, RangeChecker.RangeStatus status)
+    {
+        if (status != RangeChecker.RangeStatus.Ok)
         {
-            Console.WriteLine($"Temperature is {(temperature < 0 ? "low" : "high")}!");
-        }
-        if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
-        {
-            Console.WriteLine($"State of Charge is {(soc < 20 ? "low" : "high")}!");
-        }
-        if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
-        {
-            Console.WriteLine("Charge Rate is high!");
+            string message;
+
+            switch (parameterName)
+            {
+                case "Temperature":
+                    message = $"Temperature is {(value < 0 ? "low" : "high")}!";
+                    break;
+                case "State of Charge":
+                    message = $"State of Charge is {(value < 20 ? "low" : "high")}!";
+                    break;
+                case "Charge Rate":
+                    message = "Charge Rate is high!";
+                    break;
+                default:
+                    message = "Out of range!";
+                    break;
+            }
+
+            Console.WriteLine(message);
         }
     }
 
