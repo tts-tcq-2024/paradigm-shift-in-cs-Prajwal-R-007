@@ -1,8 +1,8 @@
 using System;
 
-private static class Checker
+public static class Checker
 {
-    private static bool BatteryIsOk(float temperature, float soc, float chargeRate)
+    public static bool BatteryIsOk(float temperature, float soc, float chargeRate)
     {
         bool isTemperatureOk = RangeChecker.CheckTemperature(temperature) == RangeChecker.RangeStatus.Ok;
         bool isSocOk = RangeChecker.CheckSoc(soc) == RangeChecker.RangeStatus.Ok;
@@ -35,44 +35,6 @@ private static class Checker
         }
     }
 
-    private static class RangeChecker
-    {
-        private enum RangeStatus
-        {
-            Ok,
-            Low,
-            High
-        }
-
-        private static RangeStatus CheckTemperature(float temperature)
-        {
-            if (temperature < 0)
-                return RangeStatus.Low;
-            else if (temperature > 45)
-                return RangeStatus.High;
-            else
-                return RangeStatus.Ok;
-        }
-
-        private static RangeStatus CheckSoc(float soc)
-        {
-            if (soc < 20)
-                return RangeStatus.Low;
-            else if (soc > 80)
-                return RangeStatus.High;
-            else
-                return RangeStatus.Ok;
-        }
-
-        private static RangeStatus CheckChargeRate(float chargeRate)
-        {
-            if (chargeRate > 0.8f)
-                return RangeStatus.High;
-            else
-                return RangeStatus.Ok;
-        }
-    }
-
     private static void ExpectFalse(bool expression)
     {
         if (expression)
@@ -97,5 +59,43 @@ private static class Checker
         ExpectFalse(BatteryIsOk(50, 85, 0.0f));
         Console.WriteLine("All ok");
         return 0;
+    }
+}
+
+internal static class RangeChecker
+{
+    internal enum RangeStatus
+    {
+        Ok,
+        Low,
+        High
+    }
+
+    internal static RangeStatus CheckTemperature(float temperature)
+    {
+        if (temperature < 0)
+            return RangeStatus.Low;
+        else if (temperature > 45)
+            return RangeStatus.High;
+        else
+            return RangeStatus.Ok;
+    }
+
+    internal static RangeStatus CheckSoc(float soc)
+    {
+        if (soc < 20)
+            return RangeStatus.Low;
+        else if (soc > 80)
+            return RangeStatus.High;
+        else
+            return RangeStatus.Ok;
+    }
+
+    internal static RangeStatus CheckChargeRate(float chargeRate)
+    {
+        if (chargeRate > 0.8f)
+            return RangeStatus.High;
+        else
+            return RangeStatus.Ok;
     }
 }
