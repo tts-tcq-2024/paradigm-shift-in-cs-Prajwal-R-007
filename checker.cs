@@ -2,7 +2,7 @@ using System;
 
 class Checker
 {
-    static bool IsBatteryOk(float temperature, float soc, float chargeRate)
+    static bool BatteryIsOk(float temperature, float soc, float chargeRate)
     {
         bool isTemperatureOk = RangeChecker.CheckTemperature(temperature) == RangeChecker.RangeStatus.Ok;
         bool isSocOk = RangeChecker.CheckSoc(soc) == RangeChecker.RangeStatus.Ok;
