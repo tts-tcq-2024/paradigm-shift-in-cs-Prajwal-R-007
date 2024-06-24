@@ -1,8 +1,8 @@
 using System;
 
-class Checker
+private static class Checker
 {
-    static bool BatteryIsOk(float temperature, float soc, float chargeRate)
+    private static bool BatteryIsOk(float temperature, float soc, float chargeRate)
     {
         bool isTemperatureOk = RangeChecker.CheckTemperature(temperature) == RangeChecker.RangeStatus.Ok;
         bool isSocOk = RangeChecker.CheckSoc(soc) == RangeChecker.RangeStatus.Ok;
@@ -11,7 +11,7 @@ class Checker
         return isTemperatureOk && isSocOk && isChargeRateOk;
     }
 
-    static void ReportCheckSoc(float soc)
+    private static void ValidateSoc(float soc)
     {
         if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
         {
@@ -19,7 +19,7 @@ class Checker
         }
     }
 
-    static void ReportCheckTemperature(float temperature)
+    private static void ValidateTemperature(float temperature)
     {
         if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
         {
@@ -27,7 +27,7 @@ class Checker
         }
     }
 
-    static void ReportCheckChargeRate(float chargeRate)
+    private static void ValidateChargeRate(float chargeRate)
     {
         if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
         {
@@ -35,16 +35,16 @@ class Checker
         }
     }
 
-    static class RangeChecker
+    private static class RangeChecker
     {
-        public enum RangeStatus
+        private enum RangeStatus
         {
             Ok,
             Low,
             High
         }
 
-        public static RangeStatus CheckTemperature(float temperature)
+        private static RangeStatus CheckTemperature(float temperature)
         {
             if (temperature < 0)
                 return RangeStatus.Low;
@@ -54,7 +54,7 @@ class Checker
                 return RangeStatus.Ok;
         }
 
-        public static RangeStatus CheckSoc(float soc)
+        private static RangeStatus CheckSoc(float soc)
         {
             if (soc < 20)
                 return RangeStatus.Low;
@@ -64,7 +64,7 @@ class Checker
                 return RangeStatus.Ok;
         }
 
-        public static RangeStatus CheckChargeRate(float chargeRate)
+        private static RangeStatus CheckChargeRate(float chargeRate)
         {
             if (chargeRate > 0.8f)
                 return RangeStatus.High;
@@ -73,7 +73,7 @@ class Checker
         }
     }
 
-    static void ExpectFalse(bool expression)
+    private static void ExpectFalse(bool expression)
     {
         if (expression)
         {
@@ -82,7 +82,7 @@ class Checker
         }
     }
 
-    static void ExpectTrue(bool expression)
+    private static void ExpectTrue(bool expression)
     {
         if (!expression)
         {
@@ -91,7 +91,7 @@ class Checker
         }
     }
 
-    static int Main()
+    public static int Main()
     {
         ExpectTrue(BatteryIsOk(25, 70, 0.7f));
         ExpectFalse(BatteryIsOk(50, 85, 0.0f));
