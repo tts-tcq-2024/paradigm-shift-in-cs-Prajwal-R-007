@@ -1,44 +1,36 @@
-using System;
-
-namespace paradigm_shift_csharp
+class Checker
 {
-    class Checker
+    static bool BatteryIsOk(float temperature, float soc, float chargeRate)
     {
-        static bool IsTemperatureOutOfRange(float temperature) {
-            return temperature < 0 || temperature > 45;
+        bool isTemperatureOk = RangeChecker.CheckTemperature(temperature) == RangeChecker.RangeStatus.Ok;
+        bool isSocOk = RangeChecker.CheckSoc(soc) == RangeChecker.RangeStatus.Ok;
+        bool isChargeRateOk = RangeChecker.CheckChargeRate(chargeRate) == RangeChecker.RangeStatus.Ok;
+
+        if (!isTemperatureOk || !isSocOk || !isChargeRateOk)
+        {
+            ReportOutOfRange(temperature, soc, chargeRate);
         }
 
-        static bool IsSocOutOfRange(float soc) {
-            return soc < 20 || soc > 80;
+        return isTemperatureOk && isSocOk && isChargeRateOk;
+    }
+
+    static void ReportOutOfRange(float temperature, float soc, float chargeRate)
+    {
+        if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
+        {
+            Console.WriteLine($"Temperature is {(temperature < 0 ? "low" : "high")}!");
         }
-
-        static bool IsChargeRateOutOfRange(float chargeRate) {
-            return chargeRate > 0.8f;
+        if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
+        {
+            Console.WriteLine($"State of Charge is {(soc < 20 ? "low" : "high")}!");
         }
-
-        static bool BatteryIsOk(float temperature, float soc, float chargeRate) {
-            bool isTemperatureOk = !IsTemperatureOutOfRange(temperature);
-            bool isSocOk = !IsSocOutOfRange(soc);
-            bool isChargeRateOk = !IsChargeRateOutOfRange(chargeRate);
-            
-            bool isOk = isTemperatureOk && isSocOk && isChargeRateOk;
-
-            if (!isTemperatureOk || !isSocOk || !isChargeRateOk) {
-                if (!isTemperatureOk) {
-                    Console.WriteLine("Temperature is out of range!");
-                }
-                if (!isSocOk) {
-                    Console.WriteLine("State of Charge is out of range!");
-                }
-                if (!isChargeRateOk) {
-                    Console.WriteLine("Charge Rate is out of range!");
-                }
-            }
-        
-            return isOk;
+        if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
+        {
+            Console.WriteLine("Charge Rate is high!");
         }
-
-        static void ExpectFalse(bool expression) {
+    }
+    
+    static void ExpectFalse(bool expression) {
             if (expression) {
                 Console.WriteLine("Expected false, but got true");
                 Environment.Exit(1);
