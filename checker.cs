@@ -16,27 +16,38 @@ namespace paradigm_shift_csharp
             return chargeRate > 0.8f;
         }
 
-static bool BatteryIsOk(float temperature, float soc, float chargeRate) {
-    bool isTemperatureOk = !IsTemperatureOutOfRange(temperature);
-    bool isSocOk = !IsSocOutOfRange(soc);
-    bool isChargeRateOk = !IsChargeRateOutOfRange(chargeRate);
+        static bool BatteryIsOk(float temperature, float soc, float chargeRate) {
+            bool isTemperatureOk = !IsTemperatureOutOfRange(temperature);
+            bool isSocOk = !IsSocOutOfRange(soc);
+            bool isChargeRateOk = !IsChargeRateOutOfRange(chargeRate);
+            
+            bool isOk = isTemperatureOk && isSocOk && isChargeRateOk;
 
-    if (!isTemperatureOk) {
-        Console.WriteLine("Temperature is out of range!");
-    }
-    if (!isSocOk) {
-        Console.WriteLine("State of Charge is out of range!");
-    }
-    if (!isChargeRateOk) {
-        Console.WriteLine("Charge Rate is out of range!");
-    }
-
-    return isTemperatureOk && isSocOk && isChargeRateOk;
-}
+            if (!isTemperatureOk || !isSocOk || !isChargeRateOk) {
+                if (!isTemperatureOk) {
+                    Console.WriteLine("Temperature is out of range!");
+                }
+                if (!isSocOk) {
+                    Console.WriteLine("State of Charge is out of range!");
+                }
+                if (!isChargeRateOk) {
+                    Console.WriteLine("Charge Rate is out of range!");
+                }
+            }
+        
+            return isOk;
+        }
 
         static void ExpectFalse(bool expression) {
             if (expression) {
                 Console.WriteLine("Expected false, but got true");
+                Environment.Exit(1);
+            }
+        }
+
+        static void ExpectTrue(bool expression) {
+            if (!expression) {
+                Console.WriteLine("Expected true, but got false");
                 Environment.Exit(1);
             }
         }
