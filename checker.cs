@@ -15,17 +15,17 @@ class Checker
     {
         if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
         {
-            ReportOutOfRange("Temperature", temperature);
+            ReportOutOfRange(temperature, soc, chargeRate);
         }
 
         if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
         {
-            ReportOutOfRange("State of Charge", soc);
+            ReportOutOfRange(temperature, soc, chargeRate);
         }
 
         if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
         {
-            ReportOutOfRange("Charge Rate", chargeRate);
+            ReportOutOfRange(temperature, soc, chargeRate);
         }
     }
 
@@ -84,21 +84,26 @@ class Checker
         }
     }
 
-    static void ExpectFalse(bool expression) {
-        if (expression) {
+    static void ExpectFalse(bool expression)
+    {
+        if (expression)
+        {
             Console.WriteLine("Expected false, but got true");
             Environment.Exit(1);
         }
     }
 
-    static void ExpectTrue(bool expression) {
-        if (!expression) {
+    static void ExpectTrue(bool expression)
+    {
+        if (!expression)
+        {
             Console.WriteLine("Expected true, but got false");
             Environment.Exit(1);
         }
     }
 
-    static int Main() {
+    static int Main()
+    {
         ExpectTrue(BatteryIsOk(25, 70, 0.7f));
         ExpectFalse(BatteryIsOk(50, 85, 0.0f));
         Console.WriteLine("All ok");
