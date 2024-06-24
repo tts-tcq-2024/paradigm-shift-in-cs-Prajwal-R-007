@@ -4,31 +4,49 @@ class Checker
 {
     static bool BatteryIsOk(float temperature, float soc, float chargeRate)
     {
-        bool isTemperatureOk = RangeChecker.CheckTemperature(temperature) == RangeChecker.RangeStatus.Ok;
-        bool isSocOk = RangeChecker.CheckSoc(soc) == RangeChecker.RangeStatus.Ok;
-        bool isChargeRateOk = RangeChecker.CheckChargeRate(chargeRate) == RangeChecker.RangeStatus.Ok;
+        bool isOk = true;
 
-        if (!isTemperatureOk || !isSocOk || !isChargeRateOk)
-        {
-            ReportOutOfRange(temperature, soc, chargeRate);
-        }
-
-        return isTemperatureOk && isSocOk && isChargeRateOk;
-    }
-
-    static void ReportOutOfRange(float temperature, float soc, float chargeRate)
-    {
         if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
         {
-            Console.WriteLine($"Temperature is {(temperature < 0 ? "low" : "high")}!");
+            ReportOutOfRange("Temperature", temperature);
+            isOk = false;
         }
+
         if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
         {
-            Console.WriteLine($"State of Charge is {(soc < 20 ? "low" : "high")}!");
+            ReportOutOfRange("State of Charge", soc);
+            isOk = false;
         }
+
         if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
         {
-            Console.WriteLine("Charge Rate is high!");
+            ReportOutOfRange("Charge Rate", chargeRate);
+            isOk = false;
+        }
+
+        return isOk;
+    }
+
+    static void ReportOutOfRange(string parameterName, float value)
+    {
+        RangeChecker.RangeStatus status;
+
+        switch (parameterName)
+        {
+            case "Temperature":
+                status = RangeChecker.CheckTemperature(value);
+                Console.WriteLine($"Temperature is {(status == RangeChecker.RangeStatus.Low ? "low" : "high")}!");
+                break;
+            case "State of Charge":
+                status = RangeChecker.CheckSoc(value);
+                Console.WriteLine($"State of Charge is {(status == RangeChecker.RangeStatus.Low ? "low" : "high")}!");
+                break;
+            case "Charge Rate":
+                status = RangeChecker.CheckChargeRate(value);
+                Console.WriteLine("Charge Rate is high!");
+                break;
+            default:
+                break;
         }
     }
 
