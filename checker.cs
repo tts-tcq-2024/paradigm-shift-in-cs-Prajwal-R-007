@@ -11,36 +11,27 @@ class Checker
         return isTemperatureOk && isSocOk && isChargeRateOk;
     }
 
-    static void ReportOutOfRange(float temperature, float soc, float chargeRate)
+    static void ReportCheckSoc(float soc)
     {
-        ReportOutOfRangeForParameter("Temperature", temperature, RangeChecker.CheckTemperature(temperature));
-        ReportOutOfRangeForParameter("State of Charge", soc, RangeChecker.CheckSoc(soc));
-        ReportOutOfRangeForParameter("Charge Rate", chargeRate, RangeChecker.CheckChargeRate(chargeRate));
+        if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
+        {
+            Console.WriteLine($"State of Charge is {(soc < 20 ? "low" : "high")}!");
+        }
     }
 
-    static void ReportOutOfRangeForParameter(string parameterName, float value, RangeChecker.RangeStatus status)
+    static void ReportCheckTemperature(float temperature)
     {
-        if (status != RangeChecker.RangeStatus.Ok)
+        if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
         {
-            string message;
+            Console.WriteLine($"Temperature is {(temperature < 0 ? "low" : "high")}!");
+        }
+    }
 
-            switch (parameterName)
-            {
-                case "Temperature":
-                    message = $"Temperature is {(value < 0 ? "low" : "high")}!";
-                    break;
-                case "State of Charge":
-                    message = $"State of Charge is {(value < 20 ? "low" : "high")}!";
-                    break;
-                case "Charge Rate":
-                    message = "Charge Rate is high!";
-                    break;
-                default:
-                    message = "Out of range!";
-                    break;
-            }
-
-            Console.WriteLine(message);
+    static void ReportCheckChargeRate(float chargeRate)
+    {
+        if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
+        {
+            Console.WriteLine("Charge Rate is high!");
         }
     }
 
