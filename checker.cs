@@ -7,25 +7,25 @@ class Checker
         bool isTemperatureOk = RangeChecker.CheckTemperature(temperature) == RangeChecker.RangeStatus.Ok;
         bool isSocOk = RangeChecker.CheckSoc(soc) == RangeChecker.RangeStatus.Ok;
         bool isChargeRateOk = RangeChecker.CheckChargeRate(chargeRate) == RangeChecker.RangeStatus.Ok;
-        if (!temperatureOk || !socOk || !chargeRateOk)
-        {
-            ReportOutOfRange(temperatureOk, socOk, chargeRateOk, temperature, soc, chargeRate);
-        }
+
+        return isTemperatureOk && isSocOk && isChargeRateOk;
     }
 
     static void ReportBatteryStatus(float temperature, float soc, float chargeRate)
     {
-        if (!isTemperatureOk)
+        if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
         {
-            Console.WriteLine($"Temperature is {(temperature < 0 ? "low" : "high")}!");
+            ReportOutOfRange(temperature, soc, chargeRate);
         }
-        if (!isSocOk)
+
+        if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
         {
-            Console.WriteLine($"State of Charge is {(soc < 20 ? "low" : "high")}!");
+            ReportOutOfRange(temperature, soc, chargeRate);
         }
-        if (!isChargeRateOk)
+
+        if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
         {
-            Console.WriteLine("Charge Rate is high!");
+            ReportOutOfRange(temperature, soc, chargeRate);
         }
     }
 
