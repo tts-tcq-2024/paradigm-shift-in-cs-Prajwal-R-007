@@ -2,19 +2,33 @@ using System;
 
 class Checker
 {
-    static bool BatteryIsOk(float temperature, float soc, float chargeRate)
+    static bool IsBatteryOk(float temperature, float soc, float chargeRate)
     {
         bool isTemperatureOk = RangeChecker.CheckTemperature(temperature) == RangeChecker.RangeStatus.Ok;
         bool isSocOk = RangeChecker.CheckSoc(soc) == RangeChecker.RangeStatus.Ok;
         bool isChargeRateOk = RangeChecker.CheckChargeRate(chargeRate) == RangeChecker.RangeStatus.Ok;
 
-        if (!isTemperatureOk || !isSocOk || !isChargeRateOk)
-        {
-            ReportOutOfRange(temperature, soc, chargeRate);
-        }
-
         return isTemperatureOk && isSocOk && isChargeRateOk;
     }
+
+    static void ReportBatteryStatus(float temperature, float soc, float chargeRate)
+    {
+        if (RangeChecker.CheckTemperature(temperature) != RangeChecker.RangeStatus.Ok)
+        {
+            ReportOutOfRange("Temperature", temperature);
+        }
+
+        if (RangeChecker.CheckSoc(soc) != RangeChecker.RangeStatus.Ok)
+        {
+            ReportOutOfRange("State of Charge", soc);
+        }
+
+        if (RangeChecker.CheckChargeRate(chargeRate) != RangeChecker.RangeStatus.Ok)
+        {
+            ReportOutOfRange("Charge Rate", chargeRate);
+        }
+    }
+
 
     static void ReportOutOfRange(float temperature, float soc, float chargeRate)
     {
