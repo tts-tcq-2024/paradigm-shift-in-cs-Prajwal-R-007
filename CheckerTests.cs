@@ -1,4 +1,4 @@
-using static paradigm_shift_csharp.BatteryCheckerHelper;
+using static paradigm_shift_csharp.CheckerHelper;
 
 namespace paradigm_shift_csharp
 {
