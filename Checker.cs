@@ -6,10 +6,9 @@ namespace paradigm_shift_csharp
 {
     internal class Checker
     {
-       static int Main()
+       static void Main()
        {
-           BatteryCheckerTests.BatteryCheckTests();
-           return 0;
+           CheckerTests.BatteryCheckTests();
        }
     }
 }
